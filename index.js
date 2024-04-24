@@ -5,10 +5,20 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// {
+//   origin: ["http://localhost:5173", "https://coffee-tea-house-auth.web.app"],
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//   withCredentials: true,
+// }
+
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173","https://user-management-a99f0.web.app"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  withCredentials: true,
+}));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.slrz0xr.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -26,7 +36,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const userCollection = client.db("dbUser").collection("user");
 
@@ -73,7 +83,7 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
